@@ -13,11 +13,6 @@ services:
       context: ./
       dockerfile: "Dockerfile.nginx-${DEFECT_DOJO_OS:-debian}"
     image: "defectdojo/defectdojo-nginx:${NGINX_VERSION:-latest}"
-    profiles: 
-      - mysql-rabbitmq
-      - mysql-redis
-      - postgres-rabbitmq
-      - postgres-redis
     depends_on:
       - uwsgi
     environment:
@@ -39,11 +34,6 @@ services:
       dockerfile: "Dockerfile.django-${DEFECT_DOJO_OS:-debian}"
       target: django
     image: "defectdojo/defectdojo-django:${DJANGO_VERSION:-latest}"
-    profiles: 
-      - mysql-rabbitmq
-      - mysql-redis
-      - postgres-rabbitmq
-      - postgres-redis
     depends_on:
       - mysql
       - postgres
@@ -63,11 +53,6 @@ services:
         - "defectdojo_media:${DD_MEDIA_ROOT:-/app/media}"
   celerybeat:
     image: "defectdojo/defectdojo-django:${DJANGO_VERSION:-latest}"
-    profiles: 
-      - mysql-rabbitmq
-      - mysql-redis
-      - postgres-rabbitmq
-      - postgres-redis
     depends_on:
       - mysql
       - postgres
@@ -84,11 +69,6 @@ services:
           target: /app/docker/extra_settings
   celeryworker:
     image: "defectdojo/defectdojo-django:${DJANGO_VERSION:-latest}"
-    profiles: 
-      - mysql-rabbitmq
-      - mysql-redis
-      - postgres-rabbitmq
-      - postgres-redis
     depends_on:
       - mysql
       - postgres
@@ -107,11 +87,6 @@ services:
         - "defectdojo_media:${DD_MEDIA_ROOT:-/app/media}"
   initializer:
     image: "defectdojo/defectdojo-django:${DJANGO_VERSION:-latest}"
-    profiles: 
-      - mysql-rabbitmq
-      - mysql-redis
-      - postgres-rabbitmq
-      - postgres-redis
     depends_on:
       - mysql
       - postgres
@@ -131,8 +106,7 @@ services:
           target: /app/docker/extra_settings
   mysql:
     image: mysql:5.7.42@sha256:bd873931ef20f30a5a9bf71498ce4e02c88cf48b2e8b782c337076d814deebde
-    profiles: 
-      - mysql-rabbitmq
+    profiles:
       - mysql-redis
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
